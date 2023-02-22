@@ -14,7 +14,6 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-
 def create_directory(directory_path):
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
@@ -22,18 +21,6 @@ def create_directory(directory_path):
 def save_dict_to_json(dict_to_save, file_path):
     with open(file_path, 'w') as outfile:
         json.dump(dict_to_save, outfile)
-
-urls = ['https://www.whitehouse.gov/briefing-room/statements-releases/2023/02/20/statement-from-president-joe-biden-on-travel-to-kyiv-ukraine/',
-      'https://www.whitehouse.gov/briefing-room/statements-releases/2023/02/15/fact-sheet-biden-harris-administration-announces-new-standards-and-major-progress-for-a-made-in-america-national-network-of-electric-vehicle-chargers/',
-      'https://www.whitehouse.gov/briefing-room/statements-releases/2023/02/14/statement-from-president-joe-biden-on-five-years-since-parkland/',
-      'https://www.whitehouse.gov/briefing-room/statements-releases/2023/02/14/statement-from-president-joe-biden-on-100th-judicial-confirmation/',
-      'https://www.whitehouse.gov/briefing-room/statements-releases/2023/02/14/statement-from-president-joe-biden-on-january-cpi-report/'     ]
-
-"""Scrape metadata from target URL."""
-import requests
-from bs4 import BeautifulSoup
-import pprint
-
 
 """Scrape metadata attributes from a requested URL."""
 
@@ -54,18 +41,23 @@ def get_title(html):
         title = title.split('|')[0]
     return title
 
+
+
 def get_text(html):
-    """Scrape all text from page."""
+    """Scrape only text from page."""
     text = ""
-    for tag in html.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'a', 'li']):
-        try: 
-          if tag.name == "a":
-              text += tag.get('href') + "\n"
-          elif tag.string:
-              text += tag.string.strip() + "\n"
+    for tag in html.find_all(['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+        try:            
+          if tag.string:
+            text += tag.string.strip() + "\n"
+          else:
+            text += " ".join(tag.get_text().split()).strip() + "\n"
         except:
           pass
-    return text.strip() 
+    test = " ".join(text.split()).strip()
+    text = text.replace('\n','')
+    text = text.replace('Mobile Menu OverlayThe White House 1600 Pennsylvania Ave NW Washington, DC 20500', '')
+    return text.strip()
 
 def get_description_DEPRECATED(html):
     """Scrape page description."""
@@ -152,12 +144,3 @@ def scrape_page_metadata(url):
         }
     pp.pprint(metadata)
     return metadata
-
-scrape = scrape_page_metadata(urls[1])
-directory_path = './data'
-create_directory(directory_path)
-
-
-for idx in range(len(urls)):
-  scrape = scrape_page_metadata(urls[idx])
-  save_dict_to_json(scrape, f'./{directory_path}/data_{idx}.json')
