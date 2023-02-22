@@ -13,18 +13,15 @@ conda create --name fast-scrapper python==3.8
 **Installation via `requirements.txt`**:
 
 ```shell
-$ git clone https://github.com/hackersandslackers/beautifulsoup-tutorial.git
-$ cd beautifulsoup-tutorial
-$ python3 -m venv myenv
-$ source myenv/bin/activate
-$ pip3 install -r requirements.txt
-$ python3 main.py
+$ git clone https://github.com/sebasmos/fastScrapper.git
+$ cd fastScrapper
+$ pip install -r requirements.txt
+$ python main.py
 ```
-
 
 ## How to Use
 
-Update **config.py** with URLS to scrap and that's it. 
+Update **config.py** with URLS to scrap. Find the metadata stored in `data/`
 
 ## Mitigation
 

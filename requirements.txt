@@ -1,5 +1,9 @@
+beautifulsoup4==4.11.2
+numpy==1.24.2
+requests==2.26.0
+spacy==3.5.0
+trafilatura==1.4.1
 attrs==20.3.0
-beautifulsoup4==4.9.3
 chardet==3.0.4
 idna==2.10
 loguru==0.5.3
